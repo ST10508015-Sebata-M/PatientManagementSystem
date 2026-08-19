@@ -78,4 +78,23 @@ public class Patient {
     public void setCategory(PatientCategory category) {
         this.category = category;
     }
+    
+    
+    //  creating a method that prints a formatted block of this patient's details
+    // Inpatient overrides this to add ward/bed info on top of what's printed here
+    public void displayDetails() {
+        System.out.println("Patient ID       : " + patientID);
+        System.out.println("Name             : " + firstName + " " + lastName);
+        System.out.println("Age              : " + age);
+        System.out.println("Gender           : " + gender);
+        System.out.println("Medical Condition: " + medicalCondition);
+        System.out.println("Category         : " + category);
+    }
+
+    // Concise single-line summary used in list views and logs: "ID | First Last | Age | Gender | Category"
+    @Override
+    public String toString() {
+        return patientID + " | " + firstName + " " + lastName + " | " + age +
+               " | " + gender + " | " + category;
+    }
 }
