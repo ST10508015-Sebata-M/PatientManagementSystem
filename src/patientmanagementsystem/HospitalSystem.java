@@ -25,7 +25,7 @@ public class HospitalSystem {
         return true;
     }
     
-    //creating a method that  searches the list for a patient matching the given ID
+    //creating a method that  searches the array list for a patient matching the given ID
     // returns null if no match found, caller must handle that case
     public Patient searchPatientById(String patientID) {
         for (Patient p : patients) {
@@ -51,4 +51,35 @@ public class HospitalSystem {
         patient.setMedicalCondition(medicalCondition);
         return true;
     }
+    
+      // creating a method that removes a patient from the system by ID
+    // returns true if a patient was removed, false if ID not found
+    public boolean deletePatient(String patientID) {
+        Patient patient = searchPatientById(patientID);
+        if (patient == null) {
+            return false;
+        }
+        patients.remove(patient);
+        return true;
+    }
+    
+      // creating a method that prints every registered patient in a numbered and readable list
+    public void displayAllPatients() {
+        if (patients.isEmpty()) {
+            System.out.println("No patients registered yet.");
+            return;
+        }
+        System.out.println("---- Registered Patients (" + patients.size() + ") ----");
+        int count = 1;
+        for (Patient p : patients) {
+            System.out.println(count + ". " + p.toString());
+            count++;
+        }
+    }
+    // creating a method gives Main class (or JUnit tests) read access to the raw list when needed
+    // e.g. for sorting and reports later
+    public ArrayList<Patient> getPatients() {
+        return patients;
+    }
+    
 }
