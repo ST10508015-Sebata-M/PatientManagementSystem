@@ -60,7 +60,7 @@ public class PatientManagementSystemTest {
     @Test
     public void testAllocateBed() {
         InPatient inpatient = new InPatient("P005", "Kabelo", "Mahlangu", 35, "Male", "Surgery Recovery");
-        hospitalSystem.registerPatient(inPatient); // register an inpatient first, only they can get beds
+        hospitalSystem.registerPatient(inpatient); // register an inpatient first, only they can get beds
         String result = hospitalSystem.allocateBed("P005", "B01"); // attempt allocation
         assertTrue(result.contains("successfully allocated")); // message should confirm success
         assertEquals("B01", inpatient.getBedNumber()); // the inpatient's own record should reflect the bed
@@ -68,7 +68,7 @@ public class PatientManagementSystemTest {
 
     @Test
     public void testReleaseBed() {
-        Inpatient inpatient = new Inpatient("P006", "Zanele", "Khumalo", 28, "Female", "Post-Op");
+        InPatient inpatient = new InPatient("P006", "Zanele", "Khumalo", 28, "Female", "Post-Op");
         hospitalSystem.registerPatient(inpatient);        // register the inpatient
         hospitalSystem.allocateBed("P006", "B02");          // allocate a bed first so there's something to release
         String result = hospitalSystem.releaseBed("B02");   // now release it
@@ -89,8 +89,8 @@ public class PatientManagementSystemTest {
 
     @Test
     public void testPreventAllocatingOccupiedBed() {
-        Inpatient first = new Inpatient("P008", "Ayanda", "Ngcobo", 45, "Female", "Pneumonia");
-        Inpatient second = new Inpatient("P009", "Sibusiso", "Mokoena", 38, "Male", "Fracture");
+        InPatient first = new InPatient("P008", "Ayanda", "Ngcobo", 45, "Female", "Pneumonia");
+        InPatient second = new InPatient("P009", "Sibusiso", "Mokoena", 38, "Male", "Fracture");
         hospitalSystem.registerPatient(first);
         hospitalSystem.registerPatient(second);
         hospitalSystem.allocateBed("P008", "B03");                    // first patient takes the bed
@@ -102,14 +102,14 @@ public class PatientManagementSystemTest {
     public void testPreventBedAllocationWhenWardFull() {
         // fill all 20 beds with 20 separate inpatients so the ward has zero availability left
         for (int i = 1; i <= 20; i++) {
-            Inpatient inpatient = new Inpatient("F" + i, "Test", "Patient" + i, 30, "Male", "Condition");
+            InPatient inpatient = new InPatient("F" + i, "Test", "Patient" + i, 30, "Male", "Condition");
             hospitalSystem.registerPatient(inpatient);
             String bedLabel = String.format("B%02d", i); // rebuilds B01...B20 to match HospitalSystem's own labels
             hospitalSystem.allocateBed("F" + i, bedLabel);
         }
 
         // now register one more inpatient and try to allocate any bed - all 20 are taken
-        Inpatient overflowPatient = new Inpatient("F21", "Overflow", "Patient", 30, "Male", "Condition");
+        InPatient overflowPatient = new InPatient("F21", "Overflow", "Patient", 30, "Male", "Condition");
         hospitalSystem.registerPatient(overflowPatient);
         String result = hospitalSystem.allocateBed("F21", "B01"); // B01 is already taken by patient F1
         assertTrue(result.contains("already occupied")); // confirms the ward-full scenario is handled

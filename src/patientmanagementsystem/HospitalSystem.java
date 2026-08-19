@@ -145,7 +145,7 @@ public class HospitalSystem {
         if (patient == null) {
             return "Allocation failed: No patient found with ID " + patientID;
         }
-        if (!(patient instanceof Inpatient)) { // step 2: only inpatients are allowed beds
+        if (!(patient instanceof InPatient)) { // step 2: only inpatients are allowed beds
             return "Allocation failed: Only inpatients can be allocated a bed.";
         }
         if (patientAlreadyHasBed(patientID)) { // step 3: stop duplicate allocations for one patient
@@ -186,8 +186,8 @@ public class HospitalSystem {
         Patient patient = searchPatientById(freedPatientID); // find that patient's record
 
         // sync the patient's own bedNumber field back to unassigned, if they still exist in the system
-        if (patient instanceof Inpatient) {
-            ((Inpatient) patient).setBedNumber("Not Assigned");
+        if (patient instanceof InPatient) {
+            ((InPatient) patient).setBedNumber("Not Assigned");
         }
 
         bed.setOccupied(false);          // free up the bed

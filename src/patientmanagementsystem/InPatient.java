@@ -4,7 +4,7 @@ package patientmanagementsystem;
 // Inpatient extends Patient class which represents a patient who has been allocated a hospital bed
 // only inpatients carry ward/bed info, which is why this data lives here and not in Patient
 
-public class InPatient {
+public class InPatient extends Patient{
     //adding private fields
     
      // fixed at 1 since the assumptions state there is only ever one ward in this system
