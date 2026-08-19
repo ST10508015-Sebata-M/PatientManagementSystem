@@ -7,7 +7,7 @@ import patientmanagementsystem.Patient;
 import patientmanagementsystem.PatientCategory;
 
 // JUnit test class verifying HospitalSystem's core functionality
-// covers CRUD, bed allocation/release, and validation edge cases from the rubric
+
 public class PatientManagementSystemTest {
 
     private HospitalSystem hospitalSystem; // fresh instance rebuilt before every single test
@@ -115,7 +115,7 @@ public class PatientManagementSystemTest {
         assertTrue(result.contains("already occupied")); // confirms the ward-full scenario is handled
     }
 
-    // ---------- creating test that Sorts by surname ----------
+    // ---------- creating test that Sorts by surname or by ID ----------
 
     @Test
     public void testSortPatientsBySurname() {
@@ -129,4 +129,72 @@ public class PatientManagementSystemTest {
         assertEquals("Adams", hospitalSystem.getPatients().get(0).getLastName());
         assertEquals("Zulu", hospitalSystem.getPatients().get(2).getLastName());
     }
+    @Test
+public void testSortPatientsById() {
+    hospitalSystem.registerPatient(new Patient("P015", "A", "One", 20, "Male", "X", PatientCategory.OUTPATIENT));
+    hospitalSystem.registerPatient(new Patient("P013", "B", "Two", 21, "Male", "X", PatientCategory.OUTPATIENT));
+    hospitalSystem.registerPatient(new Patient("P014", "C", "Three", 22, "Male", "X", PatientCategory.OUTPATIENT));
+
+    hospitalSystem.sortPatientsById(); // run the bubble sort by ID
+
+    assertEquals("P013", hospitalSystem.getPatients().get(0).getPatientID());
+    assertEquals("P014", hospitalSystem.getPatients().get(1).getPatientID());
+    assertEquals("P015", hospitalSystem.getPatients().get(2).getPatientID());
+}
+// ---------- covering not-found / negative paths ----------
+
+@Test
+public void testSearchNonExistentPatient() {
+    Patient found = hospitalSystem.searchPatientById("GHOST");
+    assertNull(found); // no such patient was ever registered
+}
+
+@Test
+public void testUpdateNonExistentPatient() {
+    boolean result = hospitalSystem.updatePatient("GHOST", "X", "Y", 30, "Male", "None");
+    assertFalse(result); // can't update a patient that doesn't exist
+}
+
+@Test
+public void testDeleteNonExistentPatient() {
+    boolean result = hospitalSystem.deletePatient("GHOST");
+    assertFalse(result); // can't delete a patient that doesn't exist
+}
+
+@Test
+public void testAllocateBedToNonExistentPatient() {
+    String result = hospitalSystem.allocateBed("GHOST", "B04");
+    assertTrue(result.contains("No patient found"));
+}
+
+@Test
+public void testAllocateBedToOutpatient() {
+    Patient outpatient = new Patient("P016", "Thandi", "Radebe", 29, "Female", "Checkup", PatientCategory.OUTPATIENT);
+    hospitalSystem.registerPatient(outpatient);
+    String result = hospitalSystem.allocateBed("P016", "B05"); // outpatients can't get beds
+    assertTrue(result.contains("Only inpatients"));
+}
+
+@Test
+public void testAllocateNonExistentBed() {
+    InPatient inpatient = new InPatient("P017", "Karabo", "Mahlangu", 31, "Male", "Fracture");
+    hospitalSystem.registerPatient(inpatient);
+    String result = hospitalSystem.allocateBed("P017", "B99"); // no such bed in the ward
+    assertTrue(result.contains("No bed found"));
+}
+
+@Test
+public void testReleaseUnoccupiedBed() {
+    String result = hospitalSystem.releaseBed("B10"); // never allocated in the first place
+    assertTrue(result.contains("already available"));
+}
+
+@Test
+public void testPatientCannotHoldTwoBeds() {
+    InPatient inpatient = new InPatient("P018", "Lindiwe", "Cele", 27, "Female", "Observation");
+    hospitalSystem.registerPatient(inpatient);
+    hospitalSystem.allocateBed("P018", "B06"); // first allocation succeeds
+    String result = hospitalSystem.allocateBed("P018", "B07"); // same patient, second bed
+    assertTrue(result.contains("already occupies a bed"));
+}
 }

@@ -26,7 +26,7 @@ public class HospitalSystem {
 
     // ===================== WARD SETUP =====================
 
-    // fills the 2D array with Bed objects labelled B01 through B20 in row-major order
+    //creating a method which  fills the 2D array with Bed objects labelled B01 through B20 in row-major order
     private void buildWardLayout() {
         int bedCounter = 1; // tracks the running bed number across rows and columns
         for (int row = 0; row < ROWS; row++) {           // walk down each row
@@ -170,7 +170,7 @@ public class HospitalSystem {
         return "Bed " + bedNumber + " successfully allocated to patient " + patientID;
     }
 
-    // releases a bed when a patient is discharged
+    // creating a method which releases a bed when a patient is discharged
     // returns a result message so Main can show exactly what happened
     public String releaseBed(String bedNumber) {
         Bed bed = findBedByNumber(bedNumber); // locate the bed first
@@ -196,7 +196,7 @@ public class HospitalSystem {
         return "Bed " + bedNumber + " successfully released.";
     }
 
-    // prints the full 4x5 ward grid exactly as it's laid out physically
+    // creating a method which prints the full 4x5 ward grid exactly as it's laid out physically
     public void displayWardLayout() {
         System.out.println("---- Ward Layout ----");
         for (int row = 0; row < ROWS; row++) {          // outer loop moves down each row
@@ -210,7 +210,7 @@ public class HospitalSystem {
         }
     }
 
-    // prints only the beds that are currently free
+    // creating a method that prints only the beds that are currently free
     public void displayAvailableBeds() {
         System.out.println("---- Available Beds ----");
         boolean anyAvailable = false; // tracks whether we found at least one free bed
@@ -228,7 +228,7 @@ public class HospitalSystem {
         }
     }
 
-    // prints only the beds that are currently occupied
+    // creating a method that prints only the beds that are currently occupied
     public void displayOccupiedBeds() {
         System.out.println("---- Occupied Beds ----");
         boolean anyOccupied = false; // tracks whether we found at least one occupied bed
@@ -246,7 +246,7 @@ public class HospitalSystem {
         }
     }
 
-    // counts how many beds in the ward are currently occupied
+    // creating a method that counts how many beds in the ward are currently occupied
     // used by both the bed report and the occupancy percentage calculation
     public int countOccupiedBeds() {
         int count = 0; // running total of occupied beds
@@ -260,21 +260,21 @@ public class HospitalSystem {
         return count; // final tally after checking all 20 beds
     }
 
-    // returns the total number of beds in the ward, used for percentage math and reports
+    // creating a method which returns the total number of beds in the ward, used for percentage math and reports
     public int getTotalBeds() {
         return ROWS * COLUMNS; // 4 x 5 = 20, kept as a calculation rather than a hardcoded 20
     }
 
     // ===================== FEATURE 3: REPORTS =====================
 
-    // prints the full patient report - reuses displayAllPatients plus a summary line
+    //creating a method that prints the full patient report - reuses displayAllPatients plus a summary line
     public void generatePatientReport() {
         System.out.println("\n===== Patient Report =====");
         displayAllPatients(); // reuse the existing formatted patient list
         System.out.println("Total Registered Patients: " + patients.size());
     }
 
-    // prints occupancy numbers and the calculated occupancy percentage
+    //creating a method that prints occupancy numbers and the calculated occupancy percentage
     public void generateBedOccupancyReport() {
         int occupied = countOccupiedBeds();     // how many beds are taken right now
         int total = getTotalBeds();             // total beds in the ward, always 20
@@ -291,7 +291,7 @@ public class HospitalSystem {
 
     // ===================== SORTING (LU1: Bubble Sort) =====================
 
-    // sorts the patient list by last name ascending using bubble sort with an early-exit flag
+    // creating a method that sorts the patient list by last name ascending using bubble sort with an early-exit flag
     // the swapped flag is the "modified for improved efficiency" version taught in LU1
     public void sortPatientsBySurname() {
         int n = patients.size(); // total number of patients to sort
@@ -318,7 +318,7 @@ public class HospitalSystem {
         }
     }
 
-    // sorts the patient list by patient ID ascending, same bubble sort pattern as above
+    // creating a method that sorts the patient list by patient ID ascending, same bubble sort pattern as above
     public void sortPatientsById() {
         int n = patients.size(); // total number of patients to sort
         for (int pass = 0; pass < n - 1; pass++) { // outer loop controls number of passes
