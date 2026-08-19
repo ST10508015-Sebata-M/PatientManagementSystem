@@ -1,14 +1,8 @@
 package patientmanagementsystem;
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author mapur
- */
-public class PatientCategory {
-    
+//I have an enum  method representing the three categories a patient can fall under
+// used across Patient, Inpatient, and HospitalSystem to enforce valid categories only
+public enum PatientCategory {
+    INPATIENT,
+    OUTPATIENT,
+    EMERGENCY
 }
